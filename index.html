@@ -9,167 +9,188 @@
 body {
   background: #191919;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   padding: 20px;
+  color: #ccc;
 }
-.wrap {
-  width: 100%;
-  max-width: 380px;
+.section-label { font-size: 10px; letter-spacing: 1px; color: #444; margin-bottom: 10px; }
+.tasks { margin-bottom: 16px; }
+.task-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; border-bottom: 0.5px solid #2a2a2a;
+}
+.task-row:last-of-type { border-bottom: none; }
+.task-name { flex: 1; font-size: 14px; color: #ccc; }
+.task-time { font-size: 12px; color: #555; font-variant-numeric: tabular-nums; min-width: 52px; text-align: right; }
+.task-time.has-time { color: #888; }
+.btn-start {
+  border: 0.5px solid #444; background: #252525; color: #aaa;
+  border-radius: 5px; padding: 4px 12px; font-size: 12px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.btn-start:hover { background: #2e2e2e; border-color: #666; }
+.btn-start.active { border-color: #f39c12; color: #f39c12; background: #1e1800; }
+.btn-del {
+  border: none; background: transparent; color: #333;
+  font-size: 18px; cursor: pointer; padding: 0 2px; line-height: 1; transition: color 0.15s;
+}
+.btn-del:hover { color: #e74c3c; }
+.add-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.add-input {
+  flex: 1; background: #252525; border: 0.5px solid #333;
+  border-radius: 5px; padding: 7px 12px; font-size: 13px; color: #ccc;
+  outline: none; transition: border-color 0.15s;
+}
+.add-input:focus { border-color: #555; }
+.add-input::placeholder { color: #444; }
+.btn-add {
+  border: 0.5px solid #444; background: #252525; color: #aaa;
+  border-radius: 5px; padding: 7px 14px; font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.btn-add:hover { background: #2e2e2e; border-color: #666; }
+.timer-box {
+  background: #111; border: 0.5px solid #2e2e2e;
+  border-radius: 8px; padding: 18px; text-align: center; margin-bottom: 16px;
 }
 .clock {
-  font-size: 52px;
-  font-weight: 300;
-  color: #e3e3e3;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 4px;
-  text-align: center;
-  margin-bottom: 8px;
-  transition: color 0.3s;
+  font-size: 44px; font-weight: 300; color: #e3e3e3;
+  font-variant-numeric: tabular-nums; letter-spacing: 3px;
+  transition: color 0.3s; margin-bottom: 6px;
 }
 .clock.running { color: #2ecc71; }
-
-.status {
-  text-align: center;
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 20px;
-  min-height: 18px;
+.clock-task { font-size: 13px; color: #555; margin-bottom: 14px; min-height: 18px; }
+.btn-stop {
+  border: 0.5px solid #c0392b; background: transparent; color: #e74c3c;
+  border-radius: 5px; padding: 7px 24px; font-size: 13px; cursor: pointer; transition: background 0.15s;
 }
-
-.btn-row {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-.btn {
-  border: 0.5px solid #444;
-  background: #252525;
-  color: #ccc;
-  border-radius: 6px;
-  padding: 9px 24px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.btn:hover { background: #2e2e2e; border-color: #666; }
-.btn.start { border-color: #2ecc71; color: #2ecc71; }
-.btn.start:hover { background: #1a2e1a; }
-.btn.stop { border-color: #e74c3c; color: #e74c3c; }
-.btn.stop:hover { background: #2e1a1a; }
-.btn:disabled { opacity: 0.3; cursor: default; }
-
-.log {
-  border-top: 0.5px solid #2a2a2a;
-  padding-top: 16px;
-  display: none;
-}
-.log-title {
-  color: #444;
-  font-size: 10px;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-}
+.btn-stop:hover { background: #2e1a1a; }
+.btn-stop:disabled { opacity: 0.3; cursor: default; }
+.log { display: none; }
+.log-title { font-size: 10px; letter-spacing: 1px; color: #444; margin-bottom: 8px; }
 .log-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: #777;
-  padding: 5px 0;
-  border-bottom: 0.5px solid #222;
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: #777; padding: 5px 0; border-bottom: 0.5px solid #222;
 }
 .log-row:last-of-type { border-bottom: none; }
-.log-row .dur { color: #aaa; font-variant-numeric: tabular-nums; }
+.log-dur { color: #aaa; font-variant-numeric: tabular-nums; }
 .total-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: #ccc;
-  padding: 10px 0 0;
-  border-top: 0.5px solid #333;
-  margin-top: 6px;
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: #ccc; padding: 8px 0 0;
+  border-top: 0.5px solid #333; margin-top: 6px;
 }
-.total-row .dur { color: #e3e3e3; }
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div class="section-label">UZDEVUMI</div>
+<div class="tasks" id="taskList"></div>
+<div class="add-row">
+  <input class="add-input" id="newTask" placeholder="Jauns uzdevums..." />
+  <button class="btn-add" onclick="addTask()">+ Pievienot</button>
+</div>
+
+<div class="timer-box">
   <div class="clock" id="clock">00:00:00</div>
-  <div class="status" id="status">Nospied Sākt</div>
-  <div class="btn-row">
-    <button class="btn start" id="startBtn" onclick="startTimer()">▶ Sākt</button>
-    <button class="btn stop" id="stopBtn" onclick="stopTimer()" disabled>⏹ Apturēt</button>
-  </div>
-  <div class="log" id="log">
-    <div class="log-title">ŠODIEN</div>
-    <div id="logRows"></div>
-    <div class="total-row">
-      <span>Kopā</span>
-      <span class="dur" id="totalEl">—</span>
-    </div>
-  </div>
+  <div class="clock-task" id="clockTask">Nav aktīva uzdevuma</div>
+  <button class="btn-stop" id="stopBtn" onclick="stopTimer()" disabled>⏹ Apturēt</button>
+</div>
+
+<div class="log" id="log">
+  <div class="log-title">ŠODIEN</div>
+  <div id="logRows"></div>
+  <div class="total-row"><span>Kopā</span><span class="log-dur" id="totalEl">—</span></div>
 </div>
 
 <script>
-let running = false, startMs = null, interval = null;
-let sessions = [], totalMs = 0, sessionCount = 0;
+let tasks = [], nextId = 1, activeId = null, startMs = null, interval = null, logs = [];
 
 function pad(n){ return String(n).padStart(2,'0'); }
+function fmtClock(ms){ const s=Math.floor(ms/1000); return pad(Math.floor(s/3600))+':'+pad(Math.floor((s%3600)/60))+':'+pad(s%60); }
+function fmtDur(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60); if(h>0) return h+'h '+m+'min'; if(m>0) return m+'min'; return s+'sek'; }
 
-function fmtClock(ms){
-  const s = Math.floor(ms/1000);
-  return pad(Math.floor(s/3600)) + ':' + pad(Math.floor((s%3600)/60)) + ':' + pad(s%60);
+function renderTasks(){
+  const list = document.getElementById('taskList');
+  list.innerHTML = '';
+  if(tasks.length === 0){
+    list.innerHTML = '<div style="font-size:13px;color:#444;padding:8px 0;">Nav uzdevumu — pievieno zemāk</div>';
+    return;
+  }
+  tasks.forEach(t => {
+    const tot = t.ms + (t.id===activeId ? (Date.now()-startMs) : 0);
+    const row = document.createElement('div');
+    row.className = 'task-row';
+    row.innerHTML = `
+      <span class="task-name">${t.name}</span>
+      <span class="task-time ${tot>0?'has-time':''}" id="tt-${t.id}">${tot>0?fmtDur(tot):''}</span>
+      <button class="btn-start ${t.id===activeId?'active':''}" onclick="toggleTask(${t.id})">${t.id===activeId?'⏸ Pauze':'▶ Sākt'}</button>
+      <button class="btn-del" onclick="deleteTask(${t.id})" title="Dzēst">×</button>
+    `;
+    list.appendChild(row);
+  });
 }
 
-function fmtDur(ms){
-  const s = Math.floor(ms/1000);
-  const h = Math.floor(s/3600);
-  const m = Math.floor((s%3600)/60);
-  const sec = s%60;
-  if(h > 0) return h + 'h ' + m + 'min';
-  if(m > 0) return m + 'min ' + sec + 'sek';
-  return sec + 'sek';
-}
-
-function startTimer(){
-  startMs = Date.now();
-  running = true;
-  sessionCount++;
-  document.getElementById('startBtn').disabled = true;
-  document.getElementById('stopBtn').disabled = false;
+function toggleTask(id){
+  if(activeId===id){ stopTimer(); return; }
+  if(activeId!==null) pauseCurrent();
+  activeId=id; startMs=Date.now();
+  document.getElementById('stopBtn').disabled=false;
   document.getElementById('clock').classList.add('running');
-  document.getElementById('status').textContent = 'Darbs notiek...';
+  const t=tasks.find(x=>x.id===id);
+  document.getElementById('clockTask').textContent=t.name;
   clearInterval(interval);
-  interval = setInterval(()=>{
-    document.getElementById('clock').textContent = fmtClock(Date.now() - startMs);
-  }, 1000);
+  interval=setInterval(()=>{
+    const elapsed=Date.now()-startMs;
+    document.getElementById('clock').textContent=fmtClock(t.ms+elapsed);
+    const el=document.getElementById('tt-'+id);
+    if(el){ el.textContent=fmtDur(t.ms+elapsed); el.className='task-time has-time'; }
+  },1000);
+  renderTasks();
 }
 
-function stopTimer(){
-  if(!running) return;
+function pauseCurrent(){
+  if(activeId===null) return;
+  const t=tasks.find(x=>x.id===activeId);
+  const elapsed=Date.now()-startMs;
+  t.ms+=elapsed;
+  logs.push({name:t.name,ms:elapsed});
   clearInterval(interval);
-  const elapsed = Date.now() - startMs;
-  running = false;
-  totalMs += elapsed;
-  sessions.push({ n: sessionCount, ms: elapsed });
-  document.getElementById('startBtn').disabled = false;
-  document.getElementById('stopBtn').disabled = true;
-  document.getElementById('clock').classList.remove('running');
-  document.getElementById('clock').textContent = fmtClock(elapsed);
-  document.getElementById('status').textContent = 'Apturēts · ' + fmtDur(elapsed);
+  activeId=null; startMs=null;
   renderLog();
 }
 
-function renderLog(){
-  document.getElementById('log').style.display = 'block';
-  document.getElementById('logRows').innerHTML = sessions.map(s =>
-    `<div class="log-row"><span>Sesija ${s.n}</span><span class="dur">${fmtDur(s.ms)}</span></div>`
-  ).join('');
-  document.getElementById('totalEl').textContent = fmtDur(totalMs);
+function stopTimer(){
+  pauseCurrent();
+  document.getElementById('stopBtn').disabled=true;
+  document.getElementById('clock').classList.remove('running');
+  document.getElementById('clock').textContent='00:00:00';
+  document.getElementById('clockTask').textContent='Nav aktīva uzdevuma';
+  renderTasks();
 }
+
+function addTask(){
+  const inp=document.getElementById('newTask');
+  const name=inp.value.trim();
+  if(!name) return;
+  tasks.push({id:nextId++,name,ms:0});
+  inp.value='';
+  renderTasks();
+}
+
+function deleteTask(id){
+  if(activeId===id) stopTimer();
+  tasks=tasks.filter(t=>t.id!==id);
+  renderTasks();
+}
+
+function renderLog(){
+  const log=document.getElementById('log');
+  log.style.display=logs.length?'block':'none';
+  const totalMs=logs.reduce((s,l)=>s+l.ms,0);
+  document.getElementById('logRows').innerHTML=logs.map(l=>`<div class="log-row"><span>${l.name}</span><span class="log-dur">${fmtDur(l.ms)}</span></div>`).join('');
+  document.getElementById('totalEl').textContent=fmtDur(totalMs);
+}
+
+document.getElementById('newTask').addEventListener('keydown',e=>{ if(e.key==='Enter') addTask(); });
+renderTasks();
 </script>
 </body>
 </html>
