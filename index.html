@@ -7,73 +7,76 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: transparent;
+  background: #202020;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   padding: 8px 0;
-  color: #ccc;
+  color: #e8e8e8;
 }
-.section-label { font-size: 10px; letter-spacing: 1px; color: #666; margin-bottom: 8px; }
+.section-label { font-size: 10px; letter-spacing: 1px; color: #888; margin-bottom: 8px; }
 .tasks { margin-bottom: 12px; }
 .task-row {
   display: flex; align-items: center; gap: 8px;
-  padding: 7px 0; border-bottom: 0.5px solid #2e2e2e;
+  padding: 8px 0; border-bottom: 0.5px solid #333;
 }
 .task-row:last-of-type { border-bottom: none; }
-.task-name { flex: 1; font-size: 14px; color: #ccc; }
-.task-time { font-size: 12px; color: #555; font-variant-numeric: tabular-nums; min-width: 52px; text-align: right; }
-.task-time.has-time { color: #888; }
+.task-name { flex: 1; font-size: 14px; color: #e8e8e8; }
+.task-time { font-size: 12px; color: #aaa; font-variant-numeric: tabular-nums; min-width: 52px; text-align: right; }
+.task-time.has-time { color: #ddd; font-weight: 500; }
 .btn-start {
-  border: 0.5px solid #3a3a3a; background: transparent; color: #888;
+  border: 0.5px solid #555; background: transparent; color: #bbb;
   border-radius: 5px; padding: 4px 12px; font-size: 12px; cursor: pointer;
   transition: all 0.15s; white-space: nowrap;
 }
-.btn-start:hover { border-color: #555; color: #aaa; }
+.btn-start:hover { border-color: #aaa; color: #e8e8e8; }
 .btn-start.active { border-color: #f39c12; color: #f39c12; }
 .btn-del {
-  border: none; background: transparent; color: #333;
+  border: none; background: transparent; color: #555;
   font-size: 18px; cursor: pointer; padding: 0 2px; line-height: 1; transition: color 0.15s;
 }
 .btn-del:hover { color: #e74c3c; }
 .add-row { display: flex; gap: 8px; margin-bottom: 16px; }
 .add-input {
-  flex: 1; background: transparent; border: 0.5px solid #3a3a3a;
-  border-radius: 5px; padding: 6px 12px; font-size: 13px; color: #ccc;
+  flex: 1; background: transparent; border: 0.5px solid #444;
+  border-radius: 5px; padding: 6px 12px; font-size: 13px; color: #e8e8e8;
   outline: none; transition: border-color 0.15s;
 }
-.add-input:focus { border-color: #666; }
-.add-input::placeholder { color: #444; }
+.add-input:focus { border-color: #888; }
+.add-input::placeholder { color: #555; }
 .btn-add {
-  border: 0.5px solid #3a3a3a; background: transparent; color: #888;
+  border: 0.5px solid #555; background: transparent; color: #bbb;
   border-radius: 5px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all 0.15s;
 }
-.btn-add:hover { border-color: #555; color: #aaa; }
-.timer-area { text-align: center; padding: 12px 0; margin-bottom: 12px; border-top: 0.5px solid #2e2e2e; border-bottom: 0.5px solid #2e2e2e; }
+.btn-add:hover { border-color: #aaa; color: #e8e8e8; }
+.timer-area {
+  text-align: center; padding: 14px 0; margin-bottom: 12px;
+  border-top: 0.5px solid #333; border-bottom: 0.5px solid #333;
+}
 .clock {
-  font-size: 40px; font-weight: 300; color: #555;
+  font-size: 44px; font-weight: 300; color: #e8e8e8;
   font-variant-numeric: tabular-nums; letter-spacing: 3px;
   transition: color 0.3s; margin-bottom: 4px;
 }
 .clock.running { color: #2ecc71; }
-.clock-task { font-size: 12px; color: #444; margin-bottom: 12px; min-height: 16px; }
+.clock-task { font-size: 13px; color: #aaa; margin-bottom: 12px; min-height: 18px; }
 .btn-stop {
-  border: 0.5px solid #3a3a3a; background: transparent; color: #666;
+  border: 0.5px solid #555; background: transparent; color: #bbb;
   border-radius: 5px; padding: 6px 20px; font-size: 13px; cursor: pointer; transition: all 0.15s;
 }
-.btn-stop:hover { border-color: #c0392b; color: #e74c3c; }
-.btn-stop:disabled { opacity: 0.2; cursor: default; }
-.btn-stop:disabled:hover { border-color: #3a3a3a; color: #666; }
+.btn-stop:hover { border-color: #e74c3c; color: #e74c3c; }
+.btn-stop:disabled { opacity: 0.25; cursor: default; }
+.btn-stop:disabled:hover { border-color: #555; color: #bbb; }
 .log { display: none; padding-top: 8px; }
-.log-title { font-size: 10px; letter-spacing: 1px; color: #444; margin-bottom: 8px; }
+.log-title { font-size: 10px; letter-spacing: 1px; color: #888; margin-bottom: 8px; }
 .log-row {
   display: flex; justify-content: space-between;
-  font-size: 13px; color: #666; padding: 4px 0; border-bottom: 0.5px solid #2a2a2a;
+  font-size: 13px; color: #bbb; padding: 5px 0; border-bottom: 0.5px solid #2a2a2a;
 }
 .log-row:last-of-type { border-bottom: none; }
-.log-dur { color: #888; font-variant-numeric: tabular-nums; }
+.log-dur { color: #e8e8e8; font-variant-numeric: tabular-nums; }
 .total-row {
   display: flex; justify-content: space-between;
-  font-size: 13px; color: #aaa; padding: 8px 0 0;
-  border-top: 0.5px solid #333; margin-top: 4px;
+  font-size: 14px; font-weight: 500; color: #e8e8e8; padding: 8px 0 0;
+  border-top: 0.5px solid #444; margin-top: 4px;
 }
 </style>
 </head>
@@ -100,7 +103,6 @@ body {
 
 <script>
 let tasks=[], nextId=1, activeId=null, startMs=null, interval=null;
-
 function pad(n){ return String(n).padStart(2,'0'); }
 function fmtClock(ms){ const s=Math.floor(ms/1000); return pad(Math.floor(s/3600))+':'+pad(Math.floor((s%3600)/60))+':'+pad(s%60); }
 function fmtDur(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60); if(h>0) return h+'h '+m+'min'; if(m>0) return m+'min'; return s+'sek'; }
@@ -108,7 +110,7 @@ function fmtDur(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.flo
 function renderTasks(){
   const list=document.getElementById('taskList');
   list.innerHTML='';
-  if(!tasks.length){ list.innerHTML='<div style="font-size:13px;color:#444;padding:6px 0">Nav uzdevumu — pievieno zemāk</div>'; return; }
+  if(!tasks.length){ list.innerHTML='<div style="font-size:13px;color:#555;padding:6px 0">Nav uzdevumu — pievieno zemāk</div>'; return; }
   tasks.forEach(t=>{
     const tot=t.ms+(t.id===activeId?(Date.now()-startMs):0);
     const row=document.createElement('div');
@@ -139,7 +141,7 @@ function toggleTask(id){
 function pauseCurrent(){
   if(activeId===null) return;
   const t=tasks.find(x=>x.id===activeId);
-  t.ms += Date.now()-startMs;  // summē pie tā paša uzdevuma
+  t.ms+=Date.now()-startMs;
   clearInterval(interval); activeId=null; startMs=null;
   renderLog();
 }
@@ -169,12 +171,10 @@ function deleteTask(id){
 
 function renderLog(){
   const log=document.getElementById('log');
-  const activeTasks=tasks.filter(t=>t.ms>0);
-  log.style.display=activeTasks.length?'block':'none';
-  const tot=activeTasks.reduce((s,t)=>s+t.ms,0);
-  document.getElementById('logRows').innerHTML=activeTasks.map(t=>
-    `<div class="log-row"><span>${t.name}</span><span class="log-dur">${fmtDur(t.ms)}</span></div>`
-  ).join('');
+  const active=tasks.filter(t=>t.ms>0);
+  log.style.display=active.length?'block':'none';
+  const tot=active.reduce((s,t)=>s+t.ms,0);
+  document.getElementById('logRows').innerHTML=active.map(t=>`<div class="log-row"><span>${t.name}</span><span class="log-dur">${fmtDur(t.ms)}</span></div>`).join('');
   document.getElementById('totalEl').textContent=fmtDur(tot);
 }
 
