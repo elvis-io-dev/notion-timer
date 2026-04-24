@@ -3,182 +3,172 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laika uzskaite – priekšskatījums</title>
+<title>Taimeris</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #111; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 24px; }
-
-.notion-card {
+body {
   background: #191919;
-  border-radius: 10px;
-  padding: 28px;
-  max-width: 560px;
-  margin: 0 auto;
-}
-.breadcrumb { color: #555; font-size: 12px; margin-bottom: 8px; }
-.page-title { color: #e3e3e3; font-size: 22px; font-weight: 600; margin-bottom: 20px; }
-
-.checklist { margin-bottom: 20px; }
-.check-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 0;
-  border-bottom: 0.5px solid #2a2a2a;
-}
-.check-item:last-child { border-bottom: none; }
-.checkbox {
-  width: 16px; height: 16px; border: 1.5px solid #555;
-  border-radius: 3px; flex-shrink: 0; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.checkbox.done { background: #2ecc71; border-color: #2ecc71; }
-.checkbox.done::after { content: '✓'; color: white; font-size: 10px; font-weight: 700; }
-.task-label { color: #ccc; font-size: 14px; flex: 1; }
-.task-label.done { text-decoration: line-through; color: #555; }
-.task-btn {
-  border: 0.5px solid #444; background: #252525; color: #aaa;
-  border-radius: 5px; padding: 4px 12px; font-size: 12px; cursor: pointer;
-  transition: all 0.15s; white-space: nowrap;
-}
-.task-btn:hover { background: #2e2e2e; border-color: #555; }
-.task-btn.active { border-color: #f39c12; color: #f39c12; background: #1e1800; }
-
-.timer-embed {
-  background: #111;
-  border: 0.5px solid #2e2e2e;
-  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   padding: 20px;
 }
-.embed-label { color: #444; font-size: 10px; letter-spacing: 1px; margin-bottom: 14px; }
-
-.timer-main { text-align: center; margin-bottom: 16px; }
-.timer-clock {
-  font-size: 42px; font-weight: 300; color: #e3e3e3;
-  font-variant-numeric: tabular-nums; letter-spacing: 4px;
+.wrap {
+  width: 100%;
+  max-width: 380px;
+}
+.clock {
+  font-size: 52px;
+  font-weight: 300;
+  color: #e3e3e3;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 8px;
   transition: color 0.3s;
 }
-.timer-clock.running { color: #2ecc71; }
-.timer-task { font-size: 13px; color: #555; margin-top: 6px; min-height: 18px; }
+.clock.running { color: #2ecc71; }
 
-.stop-row { display: flex; justify-content: center; margin-bottom: 16px; }
-.stop-btn {
-  border: 0.5px solid #c0392b; background: transparent; color: #e74c3c;
-  border-radius: 5px; padding: 7px 24px; font-size: 13px; cursor: pointer;
-  transition: background 0.15s;
+.status {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 20px;
+  min-height: 18px;
 }
-.stop-btn:hover { background: #1e0a0a; }
 
-.log { border-top: 0.5px solid #2a2a2a; padding-top: 12px; }
-.log-title { color: #444; font-size: 10px; letter-spacing: 1px; margin-bottom: 8px; }
+.btn-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.btn {
+  border: 0.5px solid #444;
+  background: #252525;
+  color: #ccc;
+  border-radius: 6px;
+  padding: 9px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: #2e2e2e; border-color: #666; }
+.btn.start { border-color: #2ecc71; color: #2ecc71; }
+.btn.start:hover { background: #1a2e1a; }
+.btn.stop { border-color: #e74c3c; color: #e74c3c; }
+.btn.stop:hover { background: #2e1a1a; }
+.btn:disabled { opacity: 0.3; cursor: default; }
+
+.log {
+  border-top: 0.5px solid #2a2a2a;
+  padding-top: 16px;
+  display: none;
+}
+.log-title {
+  color: #444;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
 .log-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px; color: #888; padding: 4px 0;
-  border-bottom: 0.5px solid #1e1e1e;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #777;
+  padding: 5px 0;
+  border-bottom: 0.5px solid #222;
 }
-.log-row:last-child { border-bottom: none; }
+.log-row:last-of-type { border-bottom: none; }
 .log-row .dur { color: #aaa; font-variant-numeric: tabular-nums; }
 .total-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px; color: #ccc; padding: 8px 0 0;
-  border-top: 0.5px solid #333; margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #ccc;
+  padding: 10px 0 0;
+  border-top: 0.5px solid #333;
+  margin-top: 6px;
 }
+.total-row .dur { color: #e3e3e3; }
 </style>
 </head>
 <body>
-<div class="notion-card">
-  <div class="breadcrumb">Ketija Karlsone | Auch</div>
-  <div class="page-title">Darāmie darbi</div>
-
-  <div class="checklist" id="checklist">
-    <div class="check-item">
-      <div class="checkbox" onclick="toggleCheck(this)"></div>
-      <span class="task-label">Domēnu pieslēgšana</span>
-      <button class="task-btn" onclick="startTask(this, 'Domēnu pieslēgšana')">▶ Sākt</button>
-    </div>
-    <div class="check-item">
-      <div class="checkbox" onclick="toggleCheck(this)"></div>
-      <span class="task-label">Privātuma politika</span>
-      <button class="task-btn" onclick="startTask(this, 'Privātuma politika')">▶ Sākt</button>
-    </div>
-    <div class="check-item">
-      <div class="checkbox" onclick="toggleCheck(this)"></div>
-      <span class="task-label">WhatsApp ziņas</span>
-      <button class="task-btn" onclick="startTask(this, 'WhatsApp ziņas')">▶ Sākt</button>
-    </div>
-    <div class="check-item">
-      <div class="checkbox" onclick="toggleCheck(this)"></div>
-      <span class="task-label">E-pasti</span>
-      <button class="task-btn" onclick="startTask(this, 'E-pasti')">▶ Sākt</button>
-    </div>
-    <div class="check-item">
-      <div class="checkbox" onclick="toggleCheck(this)"></div>
-      <span class="task-label">Automatizācijas</span>
-      <button class="task-btn" onclick="startTask(this, 'Automatizācijas')">▶ Sākt</button>
-    </div>
+<div class="wrap">
+  <div class="clock" id="clock">00:00:00</div>
+  <div class="status" id="status">Nospied Sākt</div>
+  <div class="btn-row">
+    <button class="btn start" id="startBtn" onclick="startTimer()">▶ Sākt</button>
+    <button class="btn stop" id="stopBtn" onclick="stopTimer()" disabled>⏹ Apturēt</button>
   </div>
-
-  <div class="timer-embed">
-    <div class="embed-label">LAIKA UZSKAITE</div>
-    <div class="timer-main">
-      <div class="timer-clock" id="clock">00:00:00</div>
-      <div class="timer-task" id="taskLabel">Nav aktīva uzdevuma</div>
-    </div>
-    <div class="stop-row">
-      <button class="stop-btn" onclick="stopTimer()">⏹ Apturēt</button>
-    </div>
-    <div class="log" id="log" style="display:none">
-      <div class="log-title">ŠODIEN</div>
-      <div id="logRows"></div>
-      <div class="total-row">
-        <span>Kopā</span>
-        <span class="dur" id="totalTime">0min</span>
-      </div>
+  <div class="log" id="log">
+    <div class="log-title">ŠODIEN</div>
+    <div id="logRows"></div>
+    <div class="total-row">
+      <span>Kopā</span>
+      <span class="dur" id="totalEl">—</span>
     </div>
   </div>
 </div>
 
 <script>
-let running = false, startMs = null, interval = null, activeBtn = null, activeTask = '';
-let logs = [], totalMs = 0;
+let running = false, startMs = null, interval = null;
+let sessions = [], totalMs = 0, sessionCount = 0;
 
 function pad(n){ return String(n).padStart(2,'0'); }
-function fmtClock(ms){ const s=Math.floor(ms/1000); return pad(Math.floor(s/3600))+':'+pad(Math.floor((s%3600)/60))+':'+pad(s%60); }
-function fmtDur(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60); return h>0?h+'h '+m+'min':m+'min '+(s%60)+'sek'; }
 
-function startTask(btn, name) {
-  if(running) stopTimer();
-  activeTask = name; activeBtn = btn;
-  startMs = Date.now(); running = true;
-  btn.textContent = '⏸ Pauze'; btn.classList.add('active');
+function fmtClock(ms){
+  const s = Math.floor(ms/1000);
+  return pad(Math.floor(s/3600)) + ':' + pad(Math.floor((s%3600)/60)) + ':' + pad(s%60);
+}
+
+function fmtDur(ms){
+  const s = Math.floor(ms/1000);
+  const h = Math.floor(s/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
+  if(h > 0) return h + 'h ' + m + 'min';
+  if(m > 0) return m + 'min ' + sec + 'sek';
+  return sec + 'sek';
+}
+
+function startTimer(){
+  startMs = Date.now();
+  running = true;
+  sessionCount++;
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stopBtn').disabled = false;
   document.getElementById('clock').classList.add('running');
-  document.getElementById('taskLabel').textContent = name;
+  document.getElementById('status').textContent = 'Darbs notiek...';
   clearInterval(interval);
-  interval = setInterval(()=>{ document.getElementById('clock').textContent = fmtClock(Date.now()-startMs); },1000);
+  interval = setInterval(()=>{
+    document.getElementById('clock').textContent = fmtClock(Date.now() - startMs);
+  }, 1000);
 }
 
 function stopTimer(){
   if(!running) return;
   clearInterval(interval);
-  const elapsed = Date.now()-startMs;
+  const elapsed = Date.now() - startMs;
   running = false;
   totalMs += elapsed;
-  if(activeBtn){ activeBtn.textContent='▶ Sākt'; activeBtn.classList.remove('active'); }
-  logs.push({task:activeTask, ms:elapsed});
+  sessions.push({ n: sessionCount, ms: elapsed });
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
   document.getElementById('clock').classList.remove('running');
-  document.getElementById('taskLabel').textContent = 'Apturēts';
+  document.getElementById('clock').textContent = fmtClock(elapsed);
+  document.getElementById('status').textContent = 'Apturēts · ' + fmtDur(elapsed);
   renderLog();
-  activeBtn = null;
 }
 
 function renderLog(){
-  document.getElementById('log').style.display='block';
-  const rows = document.getElementById('logRows');
-  rows.innerHTML = logs.map(l=>`<div class="log-row"><span>${l.task}</span><span class="dur">${fmtDur(l.ms)}</span></div>`).join('');
-  document.getElementById('totalTime').textContent = fmtDur(totalMs);
-}
-
-function toggleCheck(cb){
-  cb.classList.toggle('done');
-  cb.nextElementSibling.classList.toggle('done');
+  document.getElementById('log').style.display = 'block';
+  document.getElementById('logRows').innerHTML = sessions.map(s =>
+    `<div class="log-row"><span>Sesija ${s.n}</span><span class="dur">${fmtDur(s.ms)}</span></div>`
+  ).join('');
+  document.getElementById('totalEl').textContent = fmtDur(totalMs);
 }
 </script>
 </body>
