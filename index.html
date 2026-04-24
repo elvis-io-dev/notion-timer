@@ -47,7 +47,6 @@ body {
   border-radius: 5px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all 0.15s;
 }
 .btn-add:hover { border-color: #555; color: #aaa; }
-
 .timer-area { text-align: center; padding: 12px 0; margin-bottom: 12px; border-top: 0.5px solid #2e2e2e; border-bottom: 0.5px solid #2e2e2e; }
 .clock {
   font-size: 40px; font-weight: 300; color: #555;
@@ -63,7 +62,6 @@ body {
 .btn-stop:hover { border-color: #c0392b; color: #e74c3c; }
 .btn-stop:disabled { opacity: 0.2; cursor: default; }
 .btn-stop:disabled:hover { border-color: #3a3a3a; color: #666; }
-
 .log { display: none; padding-top: 8px; }
 .log-title { font-size: 10px; letter-spacing: 1px; color: #444; margin-bottom: 8px; }
 .log-row {
@@ -81,7 +79,7 @@ body {
 </head>
 <body>
 
-<div class="section-label">LAIKA UZSKAITE</div>
+<div class="section-label">UZDEVUMI</div>
 <div class="tasks" id="taskList"></div>
 <div class="add-row">
   <input class="add-input" id="newTask" placeholder="Jauns uzdevums..." />
@@ -101,7 +99,8 @@ body {
 </div>
 
 <script>
-let tasks=[], nextId=1, activeId=null, startMs=null, interval=null, logs=[];
+let tasks=[], nextId=1, activeId=null, startMs=null, interval=null;
+
 function pad(n){ return String(n).padStart(2,'0'); }
 function fmtClock(ms){ const s=Math.floor(ms/1000); return pad(Math.floor(s/3600))+':'+pad(Math.floor((s%3600)/60))+':'+pad(s%60); }
 function fmtDur(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60); if(h>0) return h+'h '+m+'min'; if(m>0) return m+'min'; return s+'sek'; }
@@ -140,8 +139,7 @@ function toggleTask(id){
 function pauseCurrent(){
   if(activeId===null) return;
   const t=tasks.find(x=>x.id===activeId);
-  const e=Date.now()-startMs;
-  t.ms+=e; logs.push({name:t.name,ms:e});
+  t.ms += Date.now()-startMs;  // summē pie tā paša uzdevuma
   clearInterval(interval); activeId=null; startMs=null;
   renderLog();
 }
@@ -166,14 +164,17 @@ function addTask(){
 function deleteTask(id){
   if(activeId===id) stopTimer();
   tasks=tasks.filter(t=>t.id!==id);
-  renderTasks();
+  renderTasks(); renderLog();
 }
 
 function renderLog(){
   const log=document.getElementById('log');
-  log.style.display=logs.length?'block':'none';
-  const tot=logs.reduce((s,l)=>s+l.ms,0);
-  document.getElementById('logRows').innerHTML=logs.map(l=>`<div class="log-row"><span>${l.name}</span><span class="log-dur">${fmtDur(l.ms)}</span></div>`).join('');
+  const activeTasks=tasks.filter(t=>t.ms>0);
+  log.style.display=activeTasks.length?'block':'none';
+  const tot=activeTasks.reduce((s,t)=>s+t.ms,0);
+  document.getElementById('logRows').innerHTML=activeTasks.map(t=>
+    `<div class="log-row"><span>${t.name}</span><span class="log-dur">${fmtDur(t.ms)}</span></div>`
+  ).join('');
   document.getElementById('totalEl').textContent=fmtDur(tot);
 }
 
